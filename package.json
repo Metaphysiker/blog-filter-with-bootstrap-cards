@@ -1,0 +1,12 @@
+{
+  "name": "blog-filter-with-bootstrap-cards",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Metaphysiker/blog-filter-with-bootstrap-cards.git",
+  "author": "Metaphysiker <s.raess@me.com>",
+  "license": "MIT",
+  "dependencies": {
+    "minify": "^8.0.3",
+    "uglify-js": "^3.14.5"
+  }
+}

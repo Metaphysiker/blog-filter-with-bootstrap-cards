@@ -2,7 +2,7 @@
 
 /*
 Plugin Name:  Blog Filter With Bootstrap Cards
-Version: 1.4
+Version: 1.5
 Description: Filters posts by categories
 Author: Sandro Räss - s.raess@me.com
 */
@@ -62,7 +62,7 @@ function prefix_enqueue()
     wp_enqueue_script('prefix_bootstrap_js');
 
     // Custom CSS
-    wp_register_style('prefix_custom_css', plugin_dir_url( __FILE__ ) . '/css/blog-filter-with-bootstrap-cards.css');
+    wp_register_style('prefix_custom_css', plugin_dir_url( __FILE__ ) . '/css/master-blog-filter-with-bootstrap_cards.min.css');
     wp_enqueue_style('prefix_custom_css');
 
     // CSS
@@ -70,11 +70,11 @@ function prefix_enqueue()
     //wp_enqueue_style('prefix_bootstrap');
 
     // Custom JS
-    wp_enqueue_script( 'prefix_custom_js', plugin_dir_url( __FILE__ ) . '/javascript/blog-filter-with-bootstrap-cards.js');
+    wp_enqueue_script( 'prefix_custom_js', plugin_dir_url( __FILE__ ) . '/javascript/master-blog-filter-with-bootstrap-cards.js');
     wp_enqueue_script('prefix_custom_js');
 
-    wp_register_style('prefix_custom_css2', plugin_dir_url( __FILE__ ) . '/css/spinner.css');
-    wp_enqueue_style('prefix_custom_css2');
+    //wp_register_style('prefix_custom_css2', plugin_dir_url( __FILE__ ) . '/css/spinner.css');
+    //wp_enqueue_style('prefix_custom_css2');
 }
 
 add_action( 'init', 'prefix_enqueue');

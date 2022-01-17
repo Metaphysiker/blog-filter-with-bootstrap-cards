@@ -1,13 +1,18 @@
-=== Hello Dolly ===
-Contributors: matt, wordpressdotorg
-Stable tag: 1.7.2
-Tested up to: 5.8
-Requires at least: 4.6
+/*
+Plugin Name:  Blog Filter With Bootstrap Cards
+Version: 1.4
+Description: Filters posts by categories
+Author: Sandro Räss - s.raess@me.com
+*/
 
-This is not just a plugin, it symbolizes the hope and enthusiasm of an entire generation summed up in two words sung most famously by Louis Armstrong.
+yarn run uglifyjs javascript/blog-filter-with-bootstrap-cards.js -c
+-o javascript/blog-filter-with-bootstrap-cards-uglified.js
 
-== Description ==
 
-This is not just a plugin, it symbolizes the hope and enthusiasm of an entire generation summed up in two words sung most famously by Louis Armstrong: Hello, Dolly. When activated you will randomly see a lyric from <cite>Hello, Dolly</cite> in the upper right of your admin screen on every page.
+yarn
 
-Thanks to Sanjib Ahmad for the artwork.
+ run uglifyjs javascript/blog-filter-with-bootstrap-cards.js -c -m reserved=['bootstrap_cards_
+object'] -o javascript/blog-filter-with-bootstrap-cards-uglified.js
+
+run minify css/blog-filter-with-bootstrap-cards.css > css/blog-filter-with-bootstrap-cards.min.
+css
