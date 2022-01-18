@@ -16,3 +16,5 @@ rm -f css/blog-filter-with-bootstrap-cards.min.css
 rm -f css/spinner.min.css
 
 yarn run uglifyjs javascript/blog-filter-with-bootstrap-cards.js -c -m reserved=['bootstrap_cards_object'] -o javascript/master-blog-filter-with-bootstrap-cards.js
+
+zip -r blog-filter-with-bootstrap-cards "blog-filter-with-bootstrap-cards.php" "css/master-blog-filter-with-bootstrap_cards.min.css" "javascript/master-blog-filter-with-bootstrap-cards.js"
