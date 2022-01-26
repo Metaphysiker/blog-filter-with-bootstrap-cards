@@ -2,12 +2,28 @@
 
 /*
 Plugin Name:  Blog Filter With Bootstrap Cards
-Version: 1.5
+Version: 1.6
 Description: Filters posts by categories
 Author: Sandro Räss - s.raess@me.com
 */
 
 function bootstrap_cards_function($atts){
+
+  //jQuery
+  wp_register_script('prefix_jquery', 'https://code.jquery.com/jquery-3.6.0.min.js');
+  wp_enqueue_script('prefix_jquery');
+
+  // JS
+  wp_register_script('prefix_bootstrap_js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js');
+  wp_enqueue_script('prefix_bootstrap_js');
+
+  // Custom CSS
+  wp_register_style('prefix_custom_css', plugin_dir_url( __FILE__ ) . '/css/master-blog-filter-with-bootstrap_cards.min.css');
+  wp_enqueue_style('prefix_custom_css');
+
+  // Custom JS
+  wp_enqueue_script( 'prefix_custom_js', plugin_dir_url( __FILE__ ) . '/javascript/master-blog-filter-with-bootstrap-cards.js');
+  wp_enqueue_script('prefix_custom_js');
 
   $a = shortcode_atts( array(
     'categories-to-be-excluded' => '0',
@@ -38,6 +54,8 @@ $return_string.= <<<HEREDOC
 
    </div>
 </div>
+
+
 HEREDOC;
 
 
@@ -54,24 +72,24 @@ function register_shortcodes(){
 function prefix_enqueue()
 {
     //jQuery
-    wp_register_script('prefix_jquery', 'https://code.jquery.com/jquery-3.6.0.min.js');
-    wp_enqueue_script('prefix_jquery');
+    //wp_register_script('prefix_jquery', 'https://code.jquery.com/jquery-3.6.0.min.js');
+    //wp_enqueue_script('prefix_jquery');
 
     // JS
-    wp_register_script('prefix_bootstrap_js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js');
-    wp_enqueue_script('prefix_bootstrap_js');
+    //wp_register_script('prefix_bootstrap_js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js');
+    //wp_enqueue_script('prefix_bootstrap_js');
 
     // Custom CSS
-    wp_register_style('prefix_custom_css', plugin_dir_url( __FILE__ ) . '/css/master-blog-filter-with-bootstrap_cards.min.css');
-    wp_enqueue_style('prefix_custom_css');
+    //wp_register_style('prefix_custom_css', plugin_dir_url( __FILE__ ) . '/css/master-blog-filter-with-bootstrap_cards.min.css');
+    //wp_enqueue_style('prefix_custom_css');
 
     // CSS
     //wp_register_style('prefix_bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css');
     //wp_enqueue_style('prefix_bootstrap');
 
     // Custom JS
-    wp_enqueue_script( 'prefix_custom_js', plugin_dir_url( __FILE__ ) . '/javascript/master-blog-filter-with-bootstrap-cards.js');
-    wp_enqueue_script('prefix_custom_js');
+    //wp_enqueue_script( 'prefix_custom_js', plugin_dir_url( __FILE__ ) . '/javascript/master-blog-filter-with-bootstrap-cards.js');
+    //wp_enqueue_script('prefix_custom_js');
 
     //wp_register_style('prefix_custom_css2', plugin_dir_url( __FILE__ ) . '/css/spinner.css');
     //wp_enqueue_style('prefix_custom_css2');
