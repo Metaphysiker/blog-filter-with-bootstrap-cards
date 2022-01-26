@@ -42,21 +42,39 @@ var bootstrap_cards_object = {
       $(this).toggleClass("disabled");
     });
   },
-  append_item: function(data) {
-
+  get_image_url: function(data) {
     var image_url = "";
 
-  //  if (typeof data["_embedded"] == "undefined" || typeof data["_embedded"]["wp:featuredmedia"] == "undefined" || typeof data["_embedded"]["wp:featuredmedia"][0] == "undefined"){
-  //    image_url = "https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ";
-  //  } else {
-  //    image_url = data["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"]["large"]["source_url"];
-  //  }
-
-    if (typeof data["yoast_head_json"] == "undefined" || typeof data["yoast_head_json"]["og_image"] == "undefined" || typeof data["yoast_head_json"]["og_image"][0] == "undefined"){
-      image_url = "https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ";
+    if (typeof data["_embedded"] == "undefined" || typeof data["_embedded"]["wp:featuredmedia"] == "undefined" || typeof data["_embedded"]["wp:featuredmedia"][0] == "undefined"){
+      //image_url = "https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ";
     } else {
-      image_url = data["yoast_head_json"]["og_image"][0]["url"];
+
+      var sizes = data["_embedded"]["wp:featuredmedia"][0]["media_details"]["sizes"];
+
+      if (typeof sizes["medium_large"] !== "undefined") {
+        image_url = sizes["medium_large"]["source_url"];
+      } else if (typeof sizes["large"] !== "undefined") {
+        image_url = sizes["large"]["source_url"];
+      } else if (typeof sizes["medium"] !== "undefined") {
+        image_url = sizes["medium"]["source_url"];
+      } else if (typeof sizes["full"] !== "undefined") {
+        image_url = sizes["full"]["source_url"];
+      }
+
     }
+
+    if(image_url === ""){
+      if (typeof data["yoast_head_json"] == "undefined" || typeof data["yoast_head_json"]["og_image"] == "undefined" || typeof data["yoast_head_json"]["og_image"][0] == "undefined"){
+        image_url = "https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ";
+      } else {
+        image_url = data["yoast_head_json"]["og_image"][0]["url"];
+      }
+    }
+
+    return image_url;
+  },
+  append_item: function(data) {
+    var image_url = bootstrap_cards_object.get_image_url(data);
 
     $(".bootstrap_cards_items_container").append(`
     <div class="col">
@@ -78,13 +96,7 @@ var bootstrap_cards_object = {
   },
   append_item_with_tag: function(data) {
 
-    var image_url = "";
-
-    if (typeof data["yoast_head_json"] == "undefined" || typeof data["yoast_head_json"]["og_image"] == "undefined" || typeof data["yoast_head_json"]["og_image"][0] == "undefined"){
-      image_url = "https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ";
-    } else {
-      image_url = data["yoast_head_json"]["og_image"][0]["url"];
-    }
+    var image_url = bootstrap_cards_object.get_image_url(data);
 
     $(".bootstrap_cards_items_container").append(`
     <div class="col">

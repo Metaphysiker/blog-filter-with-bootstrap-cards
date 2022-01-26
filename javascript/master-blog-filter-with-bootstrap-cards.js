@@ -4,7 +4,7 @@ $(document).ready(function(){var bootstrap_cards_object={category_names:{},per_p
       </div>
       `)},add_load_more_button:function(t){bootstrap_cards_object.empty_load_more_button_container(),$(".bootstrap_cards_load_more_button_container").append(`
       <button type="button" class="bootstrap_cards_load_more_button my-4" data-category-id="${t}">Mehr</button>
-      `),$(".bootstrap_cards_load_more_button").on("click",function(){bootstrap_cards_object.get_and_append_items($(this).data("category-id"))})},add_listeners_for_category_buttons:function(t){$(".bootstrap_cards_category_button").on("click",function(){bootstrap_cards_object.get_and_place_items($(this).data("category-id")),$(".bootstrap_cards_category_button").removeClass("disabled"),$(this).toggleClass("disabled")})},append_item:function(t){var e="",e=void 0===t.yoast_head_json||void 0===t.yoast_head_json.og_image||void 0===t.yoast_head_json.og_image[0]?"https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ":t.yoast_head_json.og_image[0].url;$(".bootstrap_cards_items_container").append(`
+      `),$(".bootstrap_cards_load_more_button").on("click",function(){bootstrap_cards_object.get_and_append_items($(this).data("category-id"))})},add_listeners_for_category_buttons:function(t){$(".bootstrap_cards_category_button").on("click",function(){bootstrap_cards_object.get_and_place_items($(this).data("category-id")),$(".bootstrap_cards_category_button").removeClass("disabled"),$(this).toggleClass("disabled")})},get_image_url:function(t){var e,a="";return void 0===t._embedded||void 0===t._embedded["wp:featuredmedia"]||void 0===t._embedded["wp:featuredmedia"][0]||(void 0!==(e=t._embedded["wp:featuredmedia"][0].media_details.sizes).medium_large?a=e.medium_large.source_url:void 0!==e.large?a=e.large.source_url:void 0!==e.medium?a=e.medium.source_url:void 0!==e.full&&(a=e.full.source_url)),a=""===a?void 0===t.yoast_head_json||void 0===t.yoast_head_json.og_image||void 0===t.yoast_head_json.og_image[0]?"https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ":t.yoast_head_json.og_image[0].url:a},append_item:function(t){var e=bootstrap_cards_object.get_image_url(t);$(".bootstrap_cards_items_container").append(`
     <div class="col">
       <div class="card h-100 bootstrap-cards-card">
       <img src="${e}" class="card-img-top" style="width: 100%; height: 300px; object-fit: cover;">
@@ -20,7 +20,7 @@ $(document).ready(function(){var bootstrap_cards_object={category_names:{},per_p
         </div>
       </div>
     </div>
-      `)},append_item_with_tag:function(t){var e="",e=void 0===t.yoast_head_json||void 0===t.yoast_head_json.og_image||void 0===t.yoast_head_json.og_image[0]?"https://i.picsum.photos/id/287/300/200.jpg?hmac=eVf6BLO211WaBRmmt-cOiXLvrDaqS7nqHAIVHR4YiUQ":t.yoast_head_json.og_image[0].url;$(".bootstrap_cards_items_container").append(`
+      `)},append_item_with_tag:function(t){var e=bootstrap_cards_object.get_image_url(t);$(".bootstrap_cards_items_container").append(`
     <div class="col">
       <div class="card h-100 bootstrap-cards-card">
       <img src="${e}" class="card-img-top" style="width: 100%; height: 300px; object-fit: cover;">
