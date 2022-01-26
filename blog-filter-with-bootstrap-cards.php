@@ -10,12 +10,12 @@ Author: Sandro Räss - s.raess@me.com
 function bootstrap_cards_function($atts){
 
   //jQuery
-  wp_register_script('prefix_jquery', 'https://code.jquery.com/jquery-3.6.0.min.js');
-  wp_enqueue_script('prefix_jquery');
+  //wp_register_script('prefix_jquery', 'https://code.jquery.com/jquery-3.6.0.min.js');
+  //wp_enqueue_script('prefix_jquery');
 
   // JS
-  wp_register_script('prefix_bootstrap_js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js');
-  wp_enqueue_script('prefix_bootstrap_js');
+  //wp_register_script('prefix_bootstrap_js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js');
+  //wp_enqueue_script('prefix_bootstrap_js');
 
   // Custom CSS
   wp_register_style('prefix_custom_css', plugin_dir_url( __FILE__ ) . '/css/master-blog-filter-with-bootstrap_cards.min.css');
@@ -31,6 +31,8 @@ function bootstrap_cards_function($atts){
   ), $atts );
 
 $return_string.= <<<HEREDOC
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <div class="container-fluid bootstrap_cards_container" data-categories-to-be-excluded={$a["categories-to-be-excluded"]} data-per-page={$a["per-page"]}>
 
