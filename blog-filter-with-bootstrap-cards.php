@@ -2,7 +2,7 @@
 
 /*
 Plugin Name:  Blog Filter With Bootstrap Cards
-Version: 1.6
+Version: 1.8
 Description: Filters posts by categories
 Author: Sandro Räss - s.raess@me.com
 */
@@ -19,7 +19,7 @@ function bootstrap_cards_function($atts){
 
   $a = shortcode_atts( array(
     'categories-to-be-excluded' => '0',
-    'per-page' => '50'
+    'per-page' => '50',
   ), $atts );
 
 $return_string.= <<<HEREDOC

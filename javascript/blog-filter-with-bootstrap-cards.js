@@ -1,6 +1,7 @@
 $( document ).ready(function() {
 
 var bootstrap_cards_object = {
+  endpoint: "",
   category_names: {},
   per_page: 50,
   categories_to_be_excluded: "0",
@@ -137,7 +138,7 @@ var bootstrap_cards_object = {
 
     $.ajax({
       method: "GET",
-      url: window.location.origin + "/wp-json/wp/v2/posts?_embed",
+      url: bootstrap_cards_object.endpoint + "wp/v2/posts?_embed",
       data: data
     })
     .done(function( data ) {
@@ -181,7 +182,7 @@ var bootstrap_cards_object = {
 
     $.ajax({
       method: "GET",
-      url: window.location.origin + "/wp-json/wp/v2/posts?_embed",
+      url: bootstrap_cards_object.endpoint + "wp/v2/posts?_embed",
       data: data
     })
     .done(function( data ) {
@@ -214,7 +215,7 @@ var bootstrap_cards_object = {
 
     $.ajax({
       method: "GET",
-      url: window.location.origin + "/wp-json/wp/v2/categories",
+      url: bootstrap_cards_object.endpoint + "wp/v2/categories",
       data: {exclude: bootstrap_cards_object.categories_to_be_excluded}
     })
     .done(function( data ) {
@@ -242,9 +243,9 @@ var bootstrap_cards_object = {
         }
 };
 
-
     bootstrap_cards_object.categories_to_be_excluded = $(".bootstrap_cards_container").data("categories-to-be-excluded");
     bootstrap_cards_object.per_page = $(".bootstrap_cards_container").data("per-page");
+    bootstrap_cards_object.endpoint = document.querySelector('link[rel="https://api.w.org/"]').href;
 
     bootstrap_cards_object.get_and_place_categories();
     bootstrap_cards_object.get_and_place_items("all");
