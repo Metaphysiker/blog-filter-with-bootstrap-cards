@@ -265,11 +265,19 @@ var bootstrap_cards_object = {
     })
     .done(function( data ) {
       $(".bootstrap_cards_buttons_container").empty();
-      $(".bootstrap_cards_buttons_container").append(`
-        <button type="button" class="bootstrap_cards_category_button bootstrap_cards_category_button_all mb-4" data-category-id="all">Alle anzeigen</button>
-        `);
 
       var array_of_disabled_categories = bootstrap_cards_object.categories_of_current_page.split(',');
+
+      let additional_class2 = "";
+
+      if(array_of_disabled_categories.includes("all")) {
+        additional_class2 = "disabled";
+      }
+
+      $(".bootstrap_cards_buttons_container").append(`
+        <button type="button" class="bootstrap_cards_category_button bootstrap_cards_category_button_all mb-4 ${additional_class2}" data-category-id="all">Alle anzeigen</button>
+        `);
+
 
       for (var i = 0; i < data.length; i++) {
 
