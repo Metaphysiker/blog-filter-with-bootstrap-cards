@@ -165,7 +165,7 @@ var bootstrap_cards_object = {
 
     });
   },
-  get_and_place_items: function(category_id) {
+  get_and_place_items: function(category_ids) {
     bootstrap_cards_object.toggle_spinner();
     bootstrap_cards_object.empty_items_container();
     bootstrap_cards_object.empty_load_more_button_container();
@@ -175,10 +175,10 @@ var bootstrap_cards_object = {
       per_page: bootstrap_cards_object.per_page
     };
 
-    if(category_id == "all"){
+    if(category_ids == "all"){
 
     } else {
-      data.categories = category_id;
+      data.categories = category_ids;
     }
 
     $.ajax({
@@ -191,7 +191,7 @@ var bootstrap_cards_object = {
       bootstrap_cards_object.toggle_spinner();
       bootstrap_cards_object.empty_items_container();
 
-      if(category_id == "all"){
+      if(category_ids == "all"){
         for (var i = 0; i < data.length; i++) {
           bootstrap_cards_object.append_item_with_tag(data[i]);
         }
@@ -204,7 +204,7 @@ var bootstrap_cards_object = {
 
 
       if(data.length >= bootstrap_cards_object.per_page ){
-        bootstrap_cards_object.add_load_more_button(category_id);
+        bootstrap_cards_object.add_load_more_button(category_ids);
       } else {
         bootstrap_cards_object.empty_load_more_button_container();
       }
@@ -217,7 +217,6 @@ var bootstrap_cards_object = {
     bootstrap_cards_object.empty_items_container();
     bootstrap_cards_object.empty_load_more_button_container();
     bootstrap_cards_object.current_offset = 0;
-    console.log("itemsx " + category_ids);
 
     var data = {
       per_page: bootstrap_cards_object.per_page
@@ -227,7 +226,6 @@ var bootstrap_cards_object = {
 
     } else {
       data.categories = category_ids;
-      console.log(data.categories);
     }
 
     $.ajax({
@@ -271,12 +269,20 @@ var bootstrap_cards_object = {
         <button type="button" class="bootstrap_cards_category_button bootstrap_cards_category_button_all mb-4" data-category-id="all">Alle anzeigen</button>
         `);
 
+      var array_of_disabled_categories = bootstrap_cards_object.categories_of_current_page.split(',');
+
       for (var i = 0; i < data.length; i++) {
 
         bootstrap_cards_object.category_names[data[i].id] = data[i].name;
 
+        let additional_class = "";
+
+        if(array_of_disabled_categories.includes(data[i].id.toString())) {
+          additional_class = "disabled";
+        }
+
         $(".bootstrap_cards_buttons_container").append(`
-          <button type="button" class="bootstrap_cards_category_button my-2" data-category-id=${data[i].id}>${data[i].name}</button>
+          <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id}>${data[i].name}</button>
           `);
       }
       bootstrap_cards_object.add_listeners_for_category_buttons();
@@ -329,13 +335,11 @@ var bootstrap_cards_object = {
         if (i + 1 == result.length) {
           category_string = category_string + result[i].id;
         } else {
-          category_string = category_string + result[i].id + ", ";
+          category_string = category_string + result[i].id + ",";
         }
       }
 
       bootstrap_cards_object.categories_of_current_page = category_string;
-      console.log("Categories");
-      console.log(bootstrap_cards_object.categories_of_current_page);
       resolve("categories of current post set");
 
     })
@@ -356,12 +360,4 @@ var bootstrap_cards_object = {
     console.log("ERROR!");
   });
 
-
-  //bootstrap_cards_object.categories_to_be_excluded = $(".bootstrap_cards_container").data("categories-to-be-excluded");
-  //bootstrap_cards_object.per_page = $(".bootstrap_cards_container").data("per-page");
-  //bootstrap_cards_object.endpoint = document.querySelector('link[rel="https://api.w.org/"]').href;
-
-    //bootstrap_cards_object.get_and_place_categories();
-    //bootstrap_cards_object.get_and_place_items("all");
-    //bootstrap_cards_object.get_and_place_itemsx(3);
 });
