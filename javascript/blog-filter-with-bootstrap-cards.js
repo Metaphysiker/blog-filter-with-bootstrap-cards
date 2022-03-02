@@ -5,6 +5,7 @@ var bootstrap_cards_object = {
   category_names: {},
   per_page: 50,
   categories_to_be_excluded: "0",
+  categories_of_current_page: "0",
   date_options: { year: 'numeric', month: 'long', day: 'numeric' },
   current_offset: 0,
   empty_items_container: function(params) {
@@ -211,6 +212,52 @@ var bootstrap_cards_object = {
 
     });
   },
+  get_and_place_itemsx: function(category_ids) {
+    bootstrap_cards_object.toggle_spinner();
+    bootstrap_cards_object.empty_items_container();
+    bootstrap_cards_object.empty_load_more_button_container();
+    bootstrap_cards_object.current_offset = 0;
+    console.log("itemsx " + category_ids);
+
+    var data = {
+      per_page: bootstrap_cards_object.per_page
+    };
+
+    if(category_ids == "all"){
+
+    } else {
+      data.categories = category_ids;
+      console.log(data.categories);
+    }
+
+    $.ajax({
+      method: "GET",
+      url: bootstrap_cards_object.endpoint + "wp/v2/posts?_embed",
+      data: data
+    })
+    .done(function( data ) {
+
+      bootstrap_cards_object.toggle_spinner();
+      bootstrap_cards_object.empty_items_container();
+
+      if(category_ids == "all"){
+        for (var i = 0; i < data.length; i++) {
+          bootstrap_cards_object.append_item_with_tag(data[i]);
+        }
+      } else {
+        for (var i = 0; i < data.length; i++) {
+          bootstrap_cards_object.append_item(data[i]);
+        }
+      }
+
+      if(data.length >= bootstrap_cards_object.per_page ){
+        bootstrap_cards_object.add_load_more_button(category_ids);
+      } else {
+        bootstrap_cards_object.empty_load_more_button_container();
+      }
+
+    });
+  },
   get_and_place_categories: function(params) {
 
     $.ajax({
@@ -243,10 +290,78 @@ var bootstrap_cards_object = {
         }
 };
 
-    bootstrap_cards_object.categories_to_be_excluded = $(".bootstrap_cards_container").data("categories-to-be-excluded");
-    bootstrap_cards_object.per_page = $(".bootstrap_cards_container").data("per-page");
-    bootstrap_cards_object.endpoint = document.querySelector('link[rel="https://api.w.org/"]').href;
+// Do this when shortcode is loaded on the page.
 
+  var set_categories_to_be_excluded = new Promise(function(resolve, reject) {
+    bootstrap_cards_object.categories_to_be_excluded = $(".bootstrap_cards_container").data("categories-to-be-excluded");
+    resolve("categories to be excluded set");
+  });
+
+  var set_per_page = new Promise(function(resolve, reject) {
+    bootstrap_cards_object.per_page = $(".bootstrap_cards_container").data("per-page");
+    resolve("per page set");
+  });
+
+  var set_endpoint = new Promise(function(resolve, reject) {
+    bootstrap_cards_object.endpoint = document.querySelector('link[rel="https://api.w.org/"]').href;
+    resolve("endpoint set");
+  });
+
+  var set_categories_of_current_post = new Promise(function(resolve, reject) {
+
+    var shortlink = document.querySelector('link[rel="shortlink"]').href;
+    var urlParams = new URLSearchParams(shortlink.split("?")[1]);
+    var post_id = urlParams.get("p");
+
+    $.ajax({
+      method: "GET",
+      url: bootstrap_cards_object.endpoint + "wp/v2/categories?post=" + post_id
+    })
+    .done(function( result ) {
+
+      let category_string = "";
+
+      if (result.length === 0) {
+        category_string = "all"
+      }
+
+      for (var i = 0; i < result.length; i++) {
+        if (i + 1 == result.length) {
+          category_string = category_string + result[i].id;
+        } else {
+          category_string = category_string + result[i].id + ", ";
+        }
+      }
+
+      bootstrap_cards_object.categories_of_current_page = category_string;
+      console.log("Categories");
+      console.log(bootstrap_cards_object.categories_of_current_page);
+      resolve("categories of current post set");
+
+    })
+    .fail(function( result ){
+      bootstrap_cards_object.categories_of_current_page = "all";
+      resolve("categories of current post set");
+    });
+
+  });
+
+  Promise.all([set_categories_to_be_excluded, set_per_page, set_endpoint, set_categories_of_current_post])
+  .then(function() {
+    // all loaded
     bootstrap_cards_object.get_and_place_categories();
-    bootstrap_cards_object.get_and_place_items("all");
+    bootstrap_cards_object.get_and_place_items(bootstrap_cards_object.categories_of_current_page);
+  }, function() {
+    // one or more failed
+    console.log("ERROR!");
+  });
+
+
+  //bootstrap_cards_object.categories_to_be_excluded = $(".bootstrap_cards_container").data("categories-to-be-excluded");
+  //bootstrap_cards_object.per_page = $(".bootstrap_cards_container").data("per-page");
+  //bootstrap_cards_object.endpoint = document.querySelector('link[rel="https://api.w.org/"]').href;
+
+    //bootstrap_cards_object.get_and_place_categories();
+    //bootstrap_cards_object.get_and_place_items("all");
+    //bootstrap_cards_object.get_and_place_itemsx(3);
 });
