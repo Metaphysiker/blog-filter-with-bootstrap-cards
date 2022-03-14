@@ -28,7 +28,7 @@ $return_string.= <<<HEREDOC
 
 <div class="container-fluid bootstrap_cards_container" data-categories-to-be-excluded={$a["categories-to-be-excluded"]} data-per-page={$a["per-page"]}>
 
-   <div class="bootstrap_cards_buttons_container mb-5">
+   <div class="bootstrap_cards_buttons_container mb-5 text-center">
      <div class="text-center">
        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
      </div>

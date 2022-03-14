@@ -289,9 +289,74 @@ var bootstrap_cards_object = {
           additional_class = "disabled";
         }
 
-        $(".bootstrap_cards_buttons_container").append(`
-          <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id}>${data[i].name}</button>
+        //if category has no parent, that is, if it is 0, append category
+        if(data[i].parent === 0) {
+          $(".bootstrap_cards_buttons_container").append(`
+            <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id}>${data[i].name}</button>
           `);
+        }
+
+        //collapse for sub categories
+    $(".bootstrap_cards_buttons_container").append(`
+<p>
+  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Link with href
+  </a>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Button with data-bs-target
+  </button>
+</p>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+  </div>
+</div>
+          `);
+
+      }
+      bootstrap_cards_object.add_listeners_for_category_buttons();
+    });
+  },
+  get_and_place_sub_categories: function(params) {
+
+    $.ajax({
+      method: "GET",
+      url: bootstrap_cards_object.endpoint + "wp/v2/categories",
+      data: {exclude: bootstrap_cards_object.categories_to_be_excluded}
+    })
+    .done(function( data ) {
+      $(".bootstrap_cards_buttons_container").empty();
+
+      var array_of_disabled_categories = bootstrap_cards_object.categories_of_current_page.split(',');
+
+      let additional_class2 = "";
+
+      if(array_of_disabled_categories.includes("all")) {
+        additional_class2 = "disabled";
+      }
+
+      $(".bootstrap_cards_buttons_container").append(`
+        <button type="button" class="bootstrap_cards_category_button bootstrap_cards_category_button_all mb-4 ${additional_class2}" data-category-id="all">Alle anzeigen</button>
+        `);
+
+
+      for (var i = 0; i < data.length; i++) {
+
+        bootstrap_cards_object.category_names[data[i].id] = data[i].name;
+
+        let additional_class = "";
+
+        if(array_of_disabled_categories.includes(data[i].id.toString())) {
+          additional_class = "disabled";
+        }
+
+        //if category has no parent, that is, if it is 0, append category
+        if(data[i].parent === 0) {
+          $(".bootstrap_cards_buttons_container").append(`
+            <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id}>${data[i].name}</button>
+          `);
+        }
+
       }
       bootstrap_cards_object.add_listeners_for_category_buttons();
     });
