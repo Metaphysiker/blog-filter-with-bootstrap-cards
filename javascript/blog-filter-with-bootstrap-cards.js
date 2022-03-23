@@ -175,6 +175,17 @@ var bootstrap_cards_object = {
     bootstrap_cards_object.current_offset = 0;
     bootstrap_cards_object.toggle_sub_category();
 
+    //hide all sub category containers and show sub category container, if it exists
+    $(".sub-category-container").hide();
+
+    var splitted_category_ids = String(category_ids).split(',');
+
+    for (var i = 0; i < splitted_category_ids.length; i++) {
+          $("*[data-sub-category-container-parent-id=" + splitted_category_ids[i] + "]").show();
+          $("*[data-category-id=" + splitted_category_ids[i] + "]").parent().show();
+    }
+
+
     var data = {
       per_page: bootstrap_cards_object.per_page
     };
@@ -262,6 +273,10 @@ var bootstrap_cards_object = {
   },
   get_and_place_categories: function(params) {
 
+    return new Promise(function(resolve, reject) {
+      resolve("resolved");
+
+
     $.ajax({
       method: "GET",
       url: bootstrap_cards_object.endpoint + "wp/v2/categories",
@@ -309,67 +324,28 @@ var bootstrap_cards_object = {
           //if container for sub category does not exist, create one
           if($("*[data-sub-category-container-parent-id=" + data[i].parent + "]").length === 0) {
             $(bootstrap_cards_buttons_for_sub_categories_container).append(`
-              <div data-sub-category-container-parent-id="${data[i].parent}">
-              <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id} data-parent-category-id=${data[i].parent}>${data[i].name}</button>
+              <div class="sub-category-container" data-sub-category-container-parent-id="${data[i].parent}" style="display:none;">
+              <button type="button" class="bootstrap_cards_category_button bootstrap_cards_sub_category_button my-2 ${additional_class}" data-category-id=${data[i].id} data-parent-category-id=${data[i].parent}>${data[i].name}</button>
               </div>
             `);
           } else {
             $("*[data-sub-category-container-parent-id=" + data[i].parent + "]").append(`
 
-              <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id} data-parent-category-id=${data[i].parent}>${data[i].name}</button>
+              <button type="button" class="bootstrap_cards_category_button bootstrap_cards_sub_category_button my-2 ${additional_class}" data-category-id=${data[i].id} data-parent-category-id=${data[i].parent}>${data[i].name}</button>
               `);
           }
 
         }
 
-      }
-      bootstrap_cards_object.add_listeners_for_category_buttons();
-    });
-  },
-  get_and_place_sub_categories: function(params) {
-
-    $.ajax({
-      method: "GET",
-      url: bootstrap_cards_object.endpoint + "wp/v2/categories",
-      data: {exclude: bootstrap_cards_object.categories_to_be_excluded}
-    })
-    .done(function( data ) {
-      $(".bootstrap_cards_buttons_container").empty();
-
-      var array_of_disabled_categories = bootstrap_cards_object.categories_of_current_page.split(',');
-
-      let additional_class2 = "";
-
-      if(array_of_disabled_categories.includes("all")) {
-        additional_class2 = "disabled";
-      }
-
-      //Alle anzeigen Buttons
-      $(".bootstrap_cards_buttons_container").append(`
-        <button type="button" class="bootstrap_cards_category_button bootstrap_cards_category_button_all mb-4 ${additional_class2}" data-category-id="all">Alle anzeigen</button>
-        `);
-
-      //Alle anderen Buttons
-      for (var i = 0; i < data.length; i++) {
-
-        bootstrap_cards_object.category_names[data[i].id] = data[i].name;
-
-        let additional_class = "";
-
-        if(array_of_disabled_categories.includes(data[i].id.toString())) {
-          additional_class = "disabled";
-        }
-
-        //if category has no parent, that is, if it is 0, append category
-        if(data[i].parent === 0) {
-          $(".bootstrap_cards_buttons_container").append(`
-            <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id}>${data[i].name}</button>
-          `);
+        if((i+1) === data.length){
+          resolve("added categories");
         }
 
       }
       bootstrap_cards_object.add_listeners_for_category_buttons();
+
     });
+  });
   },
   truncate: function(string, max) {
           var array = string.trim().split(' ');
@@ -436,8 +412,10 @@ var bootstrap_cards_object = {
   Promise.all([set_categories_to_be_excluded, set_per_page, set_endpoint, set_categories_of_current_post])
   .then(function() {
     // all loaded
-    bootstrap_cards_object.get_and_place_categories();
-    bootstrap_cards_object.get_and_place_items(bootstrap_cards_object.categories_of_current_page);
+    bootstrap_cards_object.get_and_place_categories().then(function(){
+      bootstrap_cards_object.get_and_place_items(bootstrap_cards_object.categories_of_current_page)
+    });
+
   }, function() {
     // one or more failed
     console.log("ERROR!");

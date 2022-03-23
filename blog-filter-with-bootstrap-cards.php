@@ -41,10 +41,6 @@ $return_string.= <<<HEREDOC
     <div class="bootstrap_cards_buttons_for_sub_categories text-center">
     Sub Categories
     </div>
-
-     <div class="text-center">
-       <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-     </div>
    </div>
 
    <div class="bootstrap_cards_spinner" style="display:none;">
