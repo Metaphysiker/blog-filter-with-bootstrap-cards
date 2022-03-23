@@ -17,6 +17,9 @@ var bootstrap_cards_object = {
   toggle_spinner: function(params) {
     $(".bootstrap_cards_spinner").toggle();
   },
+  toggle_sub_category: function(params) {
+    $(".bootstrap_cards_sub_category").toggle();
+  },
   add_spinner: function(params) {
     bootstrap_cards_object.empty_items_container();
     $(".bootstrap_cards_items_container").append(`
@@ -170,6 +173,7 @@ var bootstrap_cards_object = {
     bootstrap_cards_object.empty_items_container();
     bootstrap_cards_object.empty_load_more_button_container();
     bootstrap_cards_object.current_offset = 0;
+    bootstrap_cards_object.toggle_sub_category();
 
     var data = {
       per_page: bootstrap_cards_object.per_page
@@ -264,7 +268,13 @@ var bootstrap_cards_object = {
       data: {exclude: bootstrap_cards_object.categories_to_be_excluded}
     })
     .done(function( data ) {
-      $(".bootstrap_cards_buttons_container").empty();
+      //$(".bootstrap_cards_buttons_container").empty();
+
+      var bootstrap_cards_buttons_for_main_categories_container = ".bootstrap_cards_buttons_for_main_categories";
+      var bootstrap_cards_buttons_for_sub_categories_container = ".bootstrap_cards_buttons_for_sub_categories";
+
+      $(bootstrap_cards_buttons_for_main_categories_container).empty();
+      $(bootstrap_cards_buttons_for_sub_categories_container).empty();
 
       var array_of_disabled_categories = bootstrap_cards_object.categories_of_current_page.split(',');
 
@@ -274,7 +284,7 @@ var bootstrap_cards_object = {
         additional_class2 = "disabled";
       }
 
-      $(".bootstrap_cards_buttons_container").append(`
+      $(bootstrap_cards_buttons_for_main_categories_container).append(`
         <button type="button" class="bootstrap_cards_category_button bootstrap_cards_category_button_all mb-4 ${additional_class2}" data-category-id="all">Alle anzeigen</button>
         `);
 
@@ -289,29 +299,28 @@ var bootstrap_cards_object = {
           additional_class = "disabled";
         }
 
-        //if category has no parent, that is, if it is 0, append category
+        //if category has no parent, it goes to the main buttons container, otherwise in the sub container
         if(data[i].parent === 0) {
-          $(".bootstrap_cards_buttons_container").append(`
+          $(bootstrap_cards_buttons_for_main_categories_container).append(`
             <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id}>${data[i].name}</button>
           `);
-        }
+        } else {
 
-        //collapse for sub categories
-    $(".bootstrap_cards_buttons_container").append(`
-<p>
-  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Link with href
-  </a>
-  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Button with data-bs-target
-  </button>
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-  </div>
-</div>
-          `);
+          //if container for sub category does not exist, create one
+          if($("*[data-sub-category-container-parent-id=" + data[i].parent + "]").length === 0) {
+            $(bootstrap_cards_buttons_for_sub_categories_container).append(`
+              <div data-sub-category-container-parent-id="${data[i].parent}">
+              <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id} data-parent-category-id=${data[i].parent}>${data[i].name}</button>
+              </div>
+            `);
+          } else {
+            $("*[data-sub-category-container-parent-id=" + data[i].parent + "]").append(`
+
+              <button type="button" class="bootstrap_cards_category_button my-2 ${additional_class}" data-category-id=${data[i].id} data-parent-category-id=${data[i].parent}>${data[i].name}</button>
+              `);
+          }
+
+        }
 
       }
       bootstrap_cards_object.add_listeners_for_category_buttons();
@@ -335,11 +344,12 @@ var bootstrap_cards_object = {
         additional_class2 = "disabled";
       }
 
+      //Alle anzeigen Buttons
       $(".bootstrap_cards_buttons_container").append(`
         <button type="button" class="bootstrap_cards_category_button bootstrap_cards_category_button_all mb-4 ${additional_class2}" data-category-id="all">Alle anzeigen</button>
         `);
 
-
+      //Alle anderen Buttons
       for (var i = 0; i < data.length; i++) {
 
         bootstrap_cards_object.category_names[data[i].id] = data[i].name;
