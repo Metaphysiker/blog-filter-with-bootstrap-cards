@@ -2,7 +2,7 @@
 
 /*
 Plugin Name:  Blog Filter With Bootstrap Cards
-Version: 1.8
+Version: 1.9
 Description: Filters posts by categories
 Author: Sandro Räss - s.raess@me.com
 */

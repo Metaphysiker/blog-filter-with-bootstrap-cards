@@ -110,7 +110,7 @@ var bootstrap_cards_object = {
         <div class="card-body">
         <span class="bootstrap_cards_pill">
             ${bootstrap_cards_object.category_names[data.categories[0]]}
-          </span>
+        </span>
 
           <h2 class="text-center bootstrap_cards_title">${data.title.rendered}</h2>
           <p class="card-text bootstrap_cards_content">${bootstrap_cards_object.truncate(data.content.rendered.replace(/(<([^>]+)>)/gi, " ").replace(/\n|\r|\t/g, ""), 25)}</p>
@@ -274,8 +274,6 @@ var bootstrap_cards_object = {
   get_and_place_categories: function(params) {
 
     return new Promise(function(resolve, reject) {
-      resolve("resolved");
-
 
     $.ajax({
       method: "GET",
