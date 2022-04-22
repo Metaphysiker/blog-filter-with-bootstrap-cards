@@ -84,7 +84,7 @@ var bootstrap_cards_object = {
     $(".bootstrap_cards_items_container").append(`
     <div class="col">
       <div class="card h-100 bootstrap-cards-card">
-      <img src="${image_url}" class="card-img-top" style="width: 100%; height: 340px; object-fit: cover;">
+      <img src="${image_url}" class="card-img-top" style="width: 100%; height: 340px; object-fit: fill;">
         <div class="card-body">
           <h2 class="text-center bootstrap_cards_title">${data.title.rendered}</h2>
           <p class="card-text bootstrap_cards_content">${bootstrap_cards_object.truncate(data.content.rendered.replace(/(<([^>]+)>)/gi, " ").replace(/\n|\r|\t/g, ""), 25)}</p>
@@ -106,7 +106,7 @@ var bootstrap_cards_object = {
     $(".bootstrap_cards_items_container").append(`
     <div class="col">
       <div class="card h-100 bootstrap-cards-card">
-      <img src="${image_url}" class="card-img-top" style="width: 100%; height: 340px; object-fit: cover;">
+      <img src="${image_url}" class="card-img-top" style="width: 100%; height: 340px; object-fit: fill;">
         <div class="card-body">
         <span class="bootstrap_cards_pill">
             ${bootstrap_cards_object.category_names[data.categories[0]]}
