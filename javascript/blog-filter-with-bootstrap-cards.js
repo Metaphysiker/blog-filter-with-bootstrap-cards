@@ -1,4 +1,4 @@
-cover$( document ).ready(function() {
+$( document ).ready(function() {
 
 var bootstrap_cards_object = {
   endpoint: "",
@@ -106,7 +106,7 @@ var bootstrap_cards_object = {
     $(".bootstrap_cards_items_container").append(`
     <div class="col">
       <div class="card h-100 bootstrap-cards-card">
-      <img src="${image_url}" class="card-img-top" style="width: 100%; height: 340px; object-fit: fill;">
+      <img src="${image_url}" class="card-img-top" style="width: 100%; height: 340px; object-fit: cover;">
         <div class="card-body">
         <span class="bootstrap_cards_pill">
             ${bootstrap_cards_object.category_names[data.categories[0]]}
