@@ -290,6 +290,8 @@ var bootstrap_cards_object = {
       $(bootstrap_cards_buttons_for_sub_categories_container).empty();
 
       var array_of_disabled_categories = bootstrap_cards_object.categories_of_current_page.split(',');
+      //console.log("array_of_disabled_categories");
+      //console.log(array_of_disabled_categories);
 
       let additional_class2 = "";
 
@@ -307,6 +309,10 @@ var bootstrap_cards_object = {
         bootstrap_cards_object.category_names[data[i].id] = data[i].name;
 
         let additional_class = "";
+
+        //console.log("array_of_disabled_categories.includes(data[i].id.toString())");
+        //console.log(array_of_disabled_categories);
+        //console.log(data[i].id.toString());
 
         if(array_of_disabled_categories.includes(data[i].id.toString())) {
           additional_class = "disabled";
@@ -388,6 +394,9 @@ var bootstrap_cards_object = {
         category_string = "all"
       }
 
+      //console.log(":endpoint categories post:");
+      //console.log(result);
+
       for (var i = 0; i < result.length; i++) {
         if (i + 1 == result.length) {
           category_string = category_string + result[i].id;
@@ -397,6 +406,8 @@ var bootstrap_cards_object = {
       }
 
       bootstrap_cards_object.categories_of_current_page = category_string;
+      //console.log("category_string");
+      //console.log(category_string);
       resolve("categories of current post set");
 
     })
